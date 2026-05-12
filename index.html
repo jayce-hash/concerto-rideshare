@@ -2,94 +2,101 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Rideshare Guide</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
-
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+  <meta name="theme-color" content="#F8F9F9"/>
+  <title>Rideshare — Concerto</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+  
+  <link rel="stylesheet" href="./styles.css" />
 </head>
-<body>
-  <div class="page">
-    <!-- Header -->
-    <header class="page-header">
-      <div class="page-header-inner">
-        <img
-          src="IMG_3180.jpeg"
-          alt="Rideshare"
-          class="brand-logo"
-        />
 
-        <div class="search-wrapper">
+<body>
+  <div id="app">
+    <div class="topbar">
+      <div class="topbar-logo">
+        <span class="topbar-logo-word">CONCERTO - RIDESHARE</span>
+        <span class="topbar-logo-sub">A Premium Experience</span>
+      </div>
+      <div class="topbar-right"></div>
+    </div>
+
+    <main class="scroll-area active" id="s-home">
+      
+      <section class="hero">
+        <div class="eyebrow">Arrive Seamlessly.</div>
+        <h1 class="headline">Get there fast.<br><em>Skip the wait.</em></h1>
+        <p class="sub">Search a venue to see pickup zones, drop-off tips, and quick Uber/Lyft shortcuts.</p>
+
+        <div class="dropdown-wrap search-row">
           <input
             id="venueSearch"
-            type="text"
-            placeholder="Search a venue..."
+            class="light-input"
+            type="search"
+            placeholder="Search venues..."
             autocomplete="off"
           />
-          <div id="searchResults" class="search-results"></div>
+          <div id="searchResults" class="dropdown-list search-results"></div>
         </div>
-      </div>
-    </header>
+      </section>
 
-    <!-- Single-column layout: title/description + details -->
-    <main class="layout">
       <section id="infoPanel" class="info-panel info-panel--empty">
-        <!-- Static title + description -->
-        <div class="info-empty">
-          <h2>Get To and From the Venue Fast</h2>
-          <p>
-            Use the search bar above to look up a venue. You’ll see pickup zones, drop-off tips,
-            and quick Uber/Lyft shortcuts when available.
-          </p>
+        
+        <div class="info-empty explainer-card" style="flex-direction: column; gap: 4px;">
+          <div class="explainer-text">
+            <div class="et-title">Get To and From the Venue</div>
+            <div class="et-sub">Use the search bar above to look up a venue. You’ll see specific rideshare instructions and quick links to open your preferred app.</div>
+          </div>
         </div>
 
-        <!-- Filled once a venue is chosen -->
         <div class="info-content" hidden>
-          <header class="info-header">
-            <div>
-              <h2 id="venueName"></h2>
-              <p id="venueLocation" class="venue-location"></p>
+
+          <header class="bag-id-card info-header" style="margin-bottom: 14px; flex-direction: column; align-items: flex-start; gap: 4px; padding: 18px 20px;">
+            <div class="bag-id-info">
+              <h2 id="venueName" class="bi-type" style="font-style: normal; font-weight: 700; font-size: 22px; margin: 0;"></h2>
+              <p id="venueLocation" class="bi-dims venue-location" style="margin: 4px 0 0; font-size: 13px;"></p>
             </div>
           </header>
 
           <div class="info-cards">
-            <!-- Info block -->
-            <article class="info-card" id="rideshare-info" hidden>
-              <h3>Rideshare Information</h3>
-              <p id="rideshare-text" class="card-body"></p>
-            </article>
-
-            <!-- Buttons block -->
-            <article class="info-card" id="rideshare-buttons" hidden>
-              <h3>Use Rideshare Apps</h3>
-              <p class="card-body">
-                These shortcuts open Uber or Lyft with this venue pre-loaded whenever coordinates are available.
-              </p>
-
-              <div class="rideshare-buttons">
-                <button id="uber-to"   class="primary-btn">Uber to Venue</button>
-                <button id="uber-from" class="primary-btn">Uber from Venue</button>
-                <button id="lyft-to"   class="primary-btn">Lyft to Venue</button>
-                <button id="lyft-from" class="primary-btn">Lyft from Venue</button>
+            
+            <article class="policy-card info-card" id="rideshare-info" hidden>
+              <div class="policy-card-header section-head" style="margin-bottom: 6px;">
+                <div class="policy-card-title section-title" style="font-size: 14px; letter-spacing: .02em; text-transform: uppercase;">Rideshare Information</div>
+              </div>
+              <div class="section-body">
+                <p id="rideshare-text" class="card-body" style="font-size: 13px; color: var(--ink-2); line-height: 1.6; margin: 0;"></p>
               </div>
             </article>
+
+            <article class="policy-card info-card" id="rideshare-buttons" hidden>
+              <div class="policy-card-header section-head" style="margin-bottom: 6px;">
+                <div class="policy-card-title section-title" style="font-size: 14px; letter-spacing: .02em; text-transform: uppercase;">Use Rideshare Apps</div>
+              </div>
+              <div class="section-body">
+                <p class="card-body" style="font-size: 13px; color: var(--ink-2); line-height: 1.6; margin: 0 0 16px 0;">
+                  These shortcuts open Uber or Lyft with this venue pre-loaded whenever coordinates are available.
+                </p>
+
+                <div class="rideshare-buttons">
+                  <button id="uber-to" class="action-btn ghost">Uber to Venue</button>
+                  <button id="uber-from" class="action-btn ghost">Uber from Venue</button>
+                  <button id="lyft-to" class="action-btn ghost">Lyft to Venue</button>
+                  <button id="lyft-from" class="action-btn ghost">Lyft from Venue</button>
+                </div>
+              </div>
+            </article>
+
           </div>
         </div>
       </section>
     </main>
   </div>
 
-  <!-- BuildFire runtime (for deep links out to Uber/Lyft) -->
   <script src="https://js.buildfire.com/buildfire.min.js"></script>
 
-  <!-- App logic -->
   <script src="app.js" defer></script>
 </body>
 </html>
