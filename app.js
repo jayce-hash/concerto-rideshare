@@ -19,14 +19,14 @@ const uberFromBtn = document.getElementById("uber-from");
 const lyftToBtn = document.getElementById("lyft-to");
 const lyftFromBtn = document.getElementById("lyft-from");
 
-// Load rideshare data
-fetch("rideshare.json")
+// Load rideshare data (Using absolute path)
+fetch("/data/rideshare.json")
   .then((res) => res.json())
   .then((data) => {
     rideshareData = data || {};
     venuesList = buildVenuesList(rideshareData);
     wireSearch();
-    handleDeepLink(); // support ?venue=slug
+    handleDeepLink(); // support clean URLs, hashes, and ?venue=slug
   })
   .catch((err) => {
     console.error("Error loading rideshare.json", err);
@@ -195,6 +195,10 @@ function showVenue(slug) {
   attachActionButton(uberFromBtn, uberFromUrl, `Uber from ${venueName}`);
   attachActionButton(lyftToBtn, lyftToUrl, `Lyft to ${venueName}`);
   attachActionButton(lyftFromBtn, lyftFromUrl, `Lyft from ${venueName}`);
+
+  // --- THE MAGIC LINK UPDATER ---
+  const cleanUrl = slug.replace(/_/g, '');
+  window.history.replaceState({}, '', '#' + cleanUrl);
 }
 
 function attachActionButton(btn, url, title) {
@@ -231,15 +235,39 @@ function attachActionButton(btn, url, title) {
   });
 }
 
-// Deep-link: /rideshare/?venue=sofi_stadium
+// Deep-link / Magic Link Checker
 function handleDeepLink() {
   const params = new URLSearchParams(window.location.search);
-  const slug = params.get("venue");
-  if (!slug || !rideshareData[slug]) return;
+  const incomingQuery = params.get("venue");
 
-  const meta = venuesList.find((v) => v.slug === slug);
-  if (meta && searchInput) {
-    searchInput.value = meta.displayName;
+  const hashPath = window.location.hash.replace(/^#\/?/, '').toLowerCase(); 
+  const urlPath = window.location.pathname.replace(/^\/|\/$/g, '').toLowerCase(); 
+
+  let targetSlug = null;
+
+  // 1. Check for old ?venue= queries
+  if (incomingQuery && rideshareData[incomingQuery]) {
+    targetSlug = incomingQuery;
+  } else {
+    // 2. Check for clean URLs
+    const searchString = (hashPath || urlPath).replace(/[^a-z0-9]/g, '');
+    
+    if (searchString && searchString !== 'indexhtml') {
+      const match = venuesList.find(v => {
+        const cleanSlug = v.slug.replace(/[^a-z0-9]/g, '');
+        const cleanName = v.displayName.toLowerCase().replace(/[^a-z0-9]/g, '');
+        return cleanSlug === searchString || cleanName === searchString;
+      });
+      if (match) targetSlug = match.slug;
+    }
   }
-  showVenue(slug);
+
+  // 3. Trigger UI
+  if (targetSlug) {
+    const meta = venuesList.find((v) => v.slug === targetSlug);
+    if (meta && searchInput) {
+      searchInput.value = meta.displayName;
+    }
+    showVenue(targetSlug);
+  }
 }
